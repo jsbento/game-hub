@@ -60,3 +60,15 @@ func Aggregate(col *mongo.Collection, pipe []M, out interface{}) error {
 		return err
 	}
 }
+
+func FindOne(col *mongo.Collection, filter M, out interface{}) error {
+	return col.FindOne(context.TODO(), filter).Decode(out)
+}
+
+func Find(col *mongo.Collection, filter M, options *options.FindOptions, out interface{}) error {
+	if cur, err := col.Find(context.TODO(), filter, options); err == nil {
+		return cur.All(context.TODO(), out)
+	} else {
+		return err
+	}
+}
