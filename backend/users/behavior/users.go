@@ -50,3 +50,13 @@ func (s *Store) UpsertUser(user *t.UpsertUser) (*t.User, error) {
 	}
 	return out, nil
 }
+
+func (s *Store) GetUser(id string) (*t.User, error) {
+	col := s.client.Database(s.db).Collection(s.col)
+
+	var user *t.User
+	if err := m.FindOne(col, m.M{"_id": id}, user); err != nil {
+		return nil, err
+	}
+	return user, nil
+}
