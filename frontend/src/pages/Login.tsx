@@ -15,6 +15,7 @@ const Login: React.FC = () => {
 
     return (
         <div>
+            { isLogin ? <LoginForm /> : <SignUpForm /> }
             <button onClick={ onClickLogin }>Login</button>
             <button onClick={ onClickSignUp }>Sign Up</button>
         </div>

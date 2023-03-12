@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 
-type SignUpProps = {
-    visible: boolean;
-}
-
-const SignUpForm: React.FC<SignUpProps> = ({ visible }) => {
+const SignUpForm: React.FC = () => {
     const [ username, setUsername ] = useState<string>("");
     const [ password, setPassword ] = useState<string>("");
     const [ passwordConfirm, setPasswordConfirm ] = useState<string>("");
@@ -36,7 +32,7 @@ const SignUpForm: React.FC<SignUpProps> = ({ visible }) => {
         console.log("submit");
     }
 
-    return visible ? (
+    return(
         <div>
             <h1>Sign Up</h1>
             <form onSubmit={ onSubmit }>
@@ -60,5 +56,7 @@ const SignUpForm: React.FC<SignUpProps> = ({ visible }) => {
                 </div>
             </form>
         </div>
-    ) : null;
+    );
 }
+
+export default SignUpForm;

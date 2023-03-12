@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import Chat from './components/Chat'
+import { BrowserRouter, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <Chat />
+    <div>
+      <BrowserRouter>
+        <Route path="/auth" element={ <Login /> }/>
+      </BrowserRouter>
     </div>
   )
 }

@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 
-type LoginProps = {
-    visible: boolean;
-}
-
-const LoginForm: React.FC<LoginProps> = ({ visible }) => {
+const LoginForm: React.FC = () => {
     const [ username, setUsername ] = useState<string>("");
     const [ password, setPassword ] = useState<string>("");
 
@@ -21,7 +17,7 @@ const LoginForm: React.FC<LoginProps> = ({ visible }) => {
         console.log("submit");
     }
 
-    return visible ? (
+    return(
         <div>
             <h1>Login</h1>
             <form onSubmit={ onSubmit }>
@@ -36,7 +32,7 @@ const LoginForm: React.FC<LoginProps> = ({ visible }) => {
                 </div>
             </form>
         </div>
-    ) : null;
+    );
 }
 
 export default LoginForm;
