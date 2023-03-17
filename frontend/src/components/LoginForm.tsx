@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { setUser } from "../state/actions/actions";
+import { User } from "../types/Users";
 
 const LoginForm: React.FC = () => {
+    const dispatch = useDispatch();
+    const signIn = (user: User) => dispatch(setUser(user));
+
     const [ username, setUsername ] = useState<string>("");
     const [ password, setPassword ] = useState<string>("");
 
@@ -12,9 +19,29 @@ const LoginForm: React.FC = () => {
         setPassword(e.target.value);
     }
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submit");
+        await fetch("http://localhost:8080/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                signIn(data.user);
+            } else {
+                console.log(data.message);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     return(

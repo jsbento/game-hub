@@ -1,11 +1,19 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { setUser } from "../state/actions/actions";
+import { User } from "../types/Users";
 
 const SignUpForm: React.FC = () => {
+    const dispatch = useDispatch();
+    const signIn = (user: User) => dispatch(setUser(user));
+
     const [ username, setUsername ] = useState<string>("");
-    const [ password, setPassword ] = useState<string>("");
-    const [ passwordConfirm, setPasswordConfirm ] = useState<string>("");
     const [ email, setEmail ] = useState<string>("");
     const [ emailConfirm, setEmailConfirm ] = useState<string>("");
+    const [ password, setPassword ] = useState<string>("");
+    const [ passwordConfirm, setPasswordConfirm ] = useState<string>("");
+    const [ errors, setErrors ] = useState<string[]>([]);
 
     const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -27,9 +35,49 @@ const SignUpForm: React.FC = () => {
         setEmailConfirm(e.target.value);
     }
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submit");
+        await fetch("http://localhost:8080/users/sign-up", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                signIn(data.user);
+            } else {
+                setErrors([...errors, data.message]);
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    const validateInput = () => {
+        if( username === "" )
+            setErrors([...errors, "Username is required"])
+        else if( email === "" )
+            setErrors([...errors, "Email is required"])
+        else if( emailConfirm === "" )
+            setErrors([...errors, "Confirm Email is required"])
+        else if( password === "" )
+            setErrors([...errors, "Password is required"])
+        else if( passwordConfirm === "" )
+            setErrors([...errors, "Confirm Password is required"])
+        else if( email !== emailConfirm )
+            setErrors([...errors, "Emails do not match"])
+        else if( password !== passwordConfirm )
+            setErrors([...errors, "Passwords do not match"])
+        else
+            setErrors([]);
     }
 
     return(
@@ -55,6 +103,7 @@ const SignUpForm: React.FC = () => {
                     <button type="submit">Sign Up</button>
                 </div>
             </form>
+            { errors.length !== 0 && errors.map((error, index) => <p key={ index }>{ error }</p>) }
         </div>
     );
 }
