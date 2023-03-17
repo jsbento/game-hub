@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await fetch("http://localhost:8080/users/login", {
+        await fetch("http://localhost:8080/users/sign-in", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -68,6 +68,8 @@ func (s *UserService) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// sign up tokens
+
 	api.WriteJSON(w, http.StatusOK, user)
 }
 

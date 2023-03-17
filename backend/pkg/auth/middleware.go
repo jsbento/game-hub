@@ -10,6 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// USE COOKIES?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
 func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Header["Token"] == nil {
