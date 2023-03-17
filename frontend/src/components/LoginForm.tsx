@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { setUser } from "../state/actions/actions";
+import { setUser } from "../state/actions/Actions";
 import { User } from "../types/Users";
 
 const LoginForm: React.FC = () => {

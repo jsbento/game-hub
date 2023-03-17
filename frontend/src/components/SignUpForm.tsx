@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { setUser } from "../state/actions/actions";
+import { setUser } from "../state/actions/Actions";
 import { User } from "../types/Users";
 
 const SignUpForm: React.FC = () => {
@@ -37,6 +37,9 @@ const SignUpForm: React.FC = () => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        validateInput();
+        if( errors.length > 0 ) return;
+        
         await fetch("http://localhost:8080/users/sign-up", {
             method: "POST",
             headers: {
