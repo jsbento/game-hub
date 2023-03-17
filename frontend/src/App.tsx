@@ -1,14 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
-import Chat from './components/Chat'
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <Chat />
+    <div className="flex w-full">
+      <div className="w-full">
+        <Routes>
+          <Route index element={ <Home /> } />
+          <Route path="/auth" element={ <Login /> } />
+          <Route path="*" element={ <NotFound /> } />
+        </Routes>
+      </div>
     </div>
   )
 }
