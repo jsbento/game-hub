@@ -21,7 +21,7 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 func GenToken(id, username, email string, roles []string) (string, error) {
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load("./../../.env")
 	if err != nil {
 		log.Printf("Error loading .env file: %v", err)
 		return "", err
