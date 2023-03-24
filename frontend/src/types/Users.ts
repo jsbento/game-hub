@@ -5,3 +5,9 @@ export type User = {
     roles: string[];
     friends: string[];
 }
+
+export type Token = {
+    userId: string;
+    roles: string[];
+    token: string;
+}

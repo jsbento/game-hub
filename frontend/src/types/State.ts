@@ -1,4 +1,4 @@
-import { User } from "./Users";
+import { Token, User } from "./Users";
 
 export type Action = {
     type: string;
@@ -7,9 +7,11 @@ export type Action = {
 
 export type State = {
     user: User | null;
+    token: Token | null;
 }
 
 export const Actions = {
     SIGN_IN: "SIGN_IN",
     SIGN_OUT: "SIGN_OUT",
+    SET_TOKEN: "SET_TOKEN",
 }
