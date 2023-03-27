@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser, setToken } from "../state/actions/Actions";
-import { Token, User } from "../types/Users";
+import { Token, User, UserWithToken } from "../types/Users";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
@@ -57,7 +57,7 @@ const AuthForm: React.FC = () => {
     const [ passwordConfirm, setPasswordConfirm ] = useState<string>("");
 
     return (
-        <div>
+        <div className="border w-1/2 rounded-lg shadow">
             <Formik
                 initialValues={ isSignIn ? signInInitial : signUpInitial }
                 validationSchema={ isSignIn ? SignInSchema : SignUpSchema }
@@ -66,13 +66,14 @@ const AuthForm: React.FC = () => {
                 onSubmit={ async (values, { setSubmitting, setErrors }) => {
                     if( !isSignIn ) {
                         const { username, email, password } = values as SignUpValues;
-                        const user: User = await fetch("http://localhost:8080/users/sign-up", {
+                        const user: UserWithToken = await fetch("http://localhost:8080/users/sign-up", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ username, email, password }),
                         })
                         .then( res => res.json() )
                         .catch( err => setErrors(err) );
+                        saveToken(user.token);
                     }
                     const { username, password } = values as SignInValues;
                     const token: Token = await fetch("http://localhost:8080/users/sign-in", {
@@ -91,40 +92,43 @@ const AuthForm: React.FC = () => {
                         <h2 className="text-2xl font-bold text-center">{ isSignIn ? "Sign In" : "Sign Up" }</h2>
                         <Form className="flex flex-col w-1/2 mx-auto">
                             <div className="flex flex-col">
-                                <label htmlFor="username">Username</label>
-                                <Field type="text" id="username" name="username" />
+                                <label htmlFor="username" className="font-semibold">Username</label>
+                                <Field type="text" id="username" name="username" className="border rounded-md" />
                                 <ErrorMessage name="username" component="div" />
                             </div>
                             { !isSignIn && (
                                 <>
                                     <div className="flex flex-col">
-                                        <label htmlFor="email">Email</label>
-                                        <Field type="email" id="email" name="email" />
+                                        <label htmlFor="email" className="font-semibold">Email</label>
+                                        <Field type="email" id="email" name="email" className="border rounded-md" />
                                         <ErrorMessage name="email" component="div" />
                                     </div>
                                     <div className="flex flex-col">
-                                        <label htmlFor="emailConfirm">Confirm Email</label>
-                                        <Field type="email" id="emailConfirm" name="emailConfirm" />
+                                        <label htmlFor="emailConfirm" className="font-semibold">Confirm Email</label>
+                                        <Field type="email" id="emailConfirm" name="emailConfirm" className="border rounded-md" />
                                         <ErrorMessage name="emailConfirm" component="div" />
                                     </div>
                                 </>
                             )}
                             <div className="flex flex-col">
-                                <label htmlFor="password">Password</label>
-                                <Field type="password" id="password" name="password" />
+                                <label htmlFor="password" className="font-semibold">Password</label>
+                                <Field type="password" id="password" name="password" className="border rounded-md" />
                                 <ErrorMessage name="password" component="div" />
                             </div>
                             { !isSignIn && (
                                 <div className="flex flex-col">
-                                    <label htmlFor="passwordConfirm">Confirm Password</label>
-                                    <Field type="password" id="passwordConfirm" name="passwordConfirm" />
+                                    <label htmlFor="passwordConfirm" className="font-semibold">Confirm Password</label>
+                                    <Field type="password" id="passwordConfirm" name="passwordConfirm" className="border rounded-md" />
                                     <ErrorMessage name="passwordConfirm" component="div" />
                                 </div>
                             )}
-                            <button type="submit" className="bg-emerald-600 text-white font-bold py-2 px-4 rounded mt-4" disabled={ isSubmitting }>
+                            <button type="submit" className="bg-emerald-600 text-white font-bold py-2 px-4 rounded my-4" disabled={ isSubmitting }>
                                 { isSignIn ? "Sign In" : "Sign Up" }
                             </button>
-                            { isSubmitting && <div className="animate-pulse font-semibold text-lg">Loading...</div> }
+                            <p className="my-4">
+                                { isSignIn && "Don't have an account?"} <button type="button" className="text-emerald-600 font-bold" onClick={ () => setIsSignIn(!isSignIn) }>{ isSignIn ? "Sign Up" : "Sign In" }</button>
+                            </p>
+                            { isSubmitting && <div className="animate-pulse font-semibold text-lg my-4">Loading...</div> }
                         </Form>
                     </>
                 ) }

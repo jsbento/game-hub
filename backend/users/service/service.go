@@ -62,15 +62,29 @@ func (s *UserService) SignUp(w http.ResponseWriter, r *http.Request) {
 
 	user.Id = uuid.NewV4().String()
 	user.Password = hashPass
+	user.Roles = []string{"base"}
 
 	if err := s.Store.Insert(user); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// sign up tokens
+	token, err := auth.GenToken(user.Id, user.Username, user.Email, user.Roles)
+	if err != nil {
+		http.Error(w, "Failed to generate auth token", http.StatusBadRequest)
+		return
+	}
 
-	api.WriteJSON(w, http.StatusOK, user)
+	resp := &t.UserWithToken{
+		User: &user,
+		Token: auth.Token{
+			UserId: user.Id,
+			Roles:  user.Roles,
+			Token:  token,
+		},
+	}
+
+	api.WriteJSON(w, http.StatusOK, resp)
 }
 
 func (s *UserService) SignIn(w http.ResponseWriter, r *http.Request) {

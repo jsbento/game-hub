@@ -11,3 +11,8 @@ export type Token = {
     roles: string[];
     token: string;
 }
+
+export type UserWithToken = {
+    user: User;
+    token: Token;
+}

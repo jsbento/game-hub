@@ -2,6 +2,8 @@ package types
 
 import (
 	"errors"
+
+	"github.com/jsbento/game-hub/backend/pkg/auth"
 )
 
 type SearchUsersReq struct {
@@ -20,4 +22,9 @@ func (r *SearchUsersReq) Validate() error {
 		return errors.New("missing limit in skip query")
 	}
 	return nil
+}
+
+type UserWithToken struct {
+	User  *User `json:"user"`
+	Token auth.Token
 }
