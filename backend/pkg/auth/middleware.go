@@ -8,8 +8,10 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 )
 
+// USE COOKIES?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
 func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Header["Token"] == nil {
@@ -17,7 +19,7 @@ func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		err := godotenv.Load("../../.env")
+		err := godotenv.Load("./../../.env")
 		if err != nil {
 			http.Error(w, "Unable to validate credentials", http.StatusInternalServerError)
 			return
