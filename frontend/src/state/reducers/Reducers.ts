@@ -13,6 +13,10 @@ export const rootReducer = (state = initialState, action: Action) => {
             return { ...state, user: null };
         case "SET_TOKEN":
             return { ...state, token: action.payload };
+        case "CLEAR_STATE":
+            return { ...state, user: null, token: null };
+        case "SET_USER_TOKEN":
+            return { ...state, user: action.payload.user, token: action.payload.token };
         default:
             return state;
     }

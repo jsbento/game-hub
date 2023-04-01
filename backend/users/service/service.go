@@ -108,10 +108,13 @@ func (s *UserService) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tkn := auth.Token{
-		UserId: user.Id,
-		Roles:  user.Roles,
-		Token:  token,
+	resp := &t.UserWithToken{
+		User: &user,
+		Token: auth.Token{
+			UserId: user.Id,
+			Roles:  user.Roles,
+			Token:  token,
+		},
 	}
-	api.WriteJSON(w, http.StatusOK, tkn)
+	api.WriteJSON(w, http.StatusOK, resp)
 }

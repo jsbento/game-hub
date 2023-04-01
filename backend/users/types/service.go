@@ -25,6 +25,6 @@ func (r *SearchUsersReq) Validate() error {
 }
 
 type UserWithToken struct {
-	User  *User `json:"user"`
-	Token auth.Token
+	User  *User      `json:"user"`
+	Token auth.Token `json:"token"`
 }

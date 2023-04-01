@@ -1,12 +1,10 @@
 package auth
 
 import (
-	"log"
 	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,12 +19,6 @@ func CheckPasswordHash(password, hash string) bool {
 }
 
 func GenToken(id, username, email string, roles []string) (string, error) {
-	err := godotenv.Load("./../../.env")
-	if err != nil {
-		log.Printf("Error loading .env file: %v", err)
-		return "", err
-	}
-
 	signingKey := []byte(os.Getenv("JWT_SECRET_KEY"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"authorized": true,

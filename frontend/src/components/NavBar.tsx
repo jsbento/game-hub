@@ -1,9 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback } from "react";
+import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 import { State } from "../types/State";
+import { clearState } from "../state/actions/Actions";
 
 const NavBar: React.FC = () => {
+    const navigate = useNavigate();
+
     const user = useSelector((state:State) => state.user);
+
+    const dispatch = useDispatch();
+
+    const clear = useCallback(() => dispatch(clearState()), [ dispatch ]);
 
     return(
         <div className="sticky w-full h-28 bg-gradient-to-r from-sky-500 to-emerald-600">
@@ -14,18 +22,23 @@ const NavBar: React.FC = () => {
                     </h1>
                 </li>
                 <li className="font-bold text-xl">
-                    <a href="/">Home</a>
+                    <p className="cursor-pointer" onClick={ () => navigate("/") }>Home</p>
                 </li>
                 <li className="font-bold text-xl">
-                    <a href="/games">Games</a>
+                    <p className="cursor-pointer" onClick={ () => navigate("/games") }>Games</p>
                 </li>
                 { user ? (
-                    <li className="font-bold text-xl">
-                        <a href="/profile">Profile</a>
-                    </li>
+                    <>
+                        <li className="font-bold text-xl">
+                            <p className="cursor-pointer" onClick={ () => navigate("/profile") }>Profile</p>
+                        </li>
+                        <li className="font-bold text-xl">
+                            <p className="cursor-pointer" onClick={ () => clear() }>Logout</p>
+                        </li>
+                    </>
                 ) : (
                     <li className="font-bold text-xl">
-                        <a href="/auth">Login</a>
+                        <p className="cursor-pointer" onClick={ () => navigate("/auth") }>Login</p>
                     </li>
                 )}
             </ul>

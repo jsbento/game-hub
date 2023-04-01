@@ -7,8 +7,6 @@ import (
 	"strings"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/joho/godotenv"
-	// "github.com/joho/godotenv"
 )
 
 // USE COOKIES?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
@@ -19,16 +17,11 @@ func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		err := godotenv.Load("./../../.env")
-		if err != nil {
-			http.Error(w, "Unable to validate credentials", http.StatusInternalServerError)
-			return
-		}
 		key := []byte(os.Getenv("JWT_SECRET_KEY"))
 
 		token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, errors.New("Unexpected signing method")
+				return nil, errors.New("unexpected signing method")
 			}
 			return key, nil
 		})
@@ -50,6 +43,5 @@ func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 		}
 
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
-		return
 	}
 }
