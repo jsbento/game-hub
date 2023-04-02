@@ -13,6 +13,11 @@ const NavBar: React.FC = () => {
 
     const clear = useCallback(() => dispatch(clearState()), [ dispatch ]);
 
+    const onLogout = () => {
+        clear();
+        navigate("/");
+    }
+
     return(
         <div className="sticky w-full h-28 bg-gradient-to-r from-sky-500 to-emerald-600">
             <ul className="h-full flex justify-end px-5 py-3 gap-12 items-center">
@@ -33,7 +38,7 @@ const NavBar: React.FC = () => {
                             <p className="cursor-pointer" onClick={ () => navigate("/profile") }>Profile</p>
                         </li>
                         <li className="font-bold text-xl">
-                            <p className="cursor-pointer" onClick={ () => clear() }>Logout</p>
+                            <p className="cursor-pointer" onClick={ onLogout }>Logout</p>
                         </li>
                     </>
                 ) : (
