@@ -28,3 +28,7 @@ type UserWithToken struct {
 	User  *User      `json:"user"`
 	Token auth.Token `json:"token"`
 }
+
+type HandleInviteReq struct {
+	Option string `json:"option"`
+}
