@@ -38,20 +38,21 @@ const signUpInitial: SignUpValues = {
 }
 
 const SignUpSchema = Yup.object().shape({
-    username: Yup.string().trim().required("Username is required"),
-    email: Yup.string().trim().email("Invalid email").required("Email is required"),
-    emailConfirm: Yup.string().trim().email("Invalid email").required("Email confirmation is required").oneOf([Yup.ref("email")], "Emails must match"),
-    password: Yup.string().trim().required("Password is required"),
-    passwordConfirm: Yup.string().trim().required("Password confirmation is required").oneOf([Yup.ref("password")], "Passwords must match"),
+    username: Yup.string().trim().required( "Username is required" ),
+    email: Yup.string().trim().email( "Invalid email" ).required( "Email is required" ),
+    emailConfirm: Yup.string().trim().email( "Invalid email" ).required("Email confirmation is required").oneOf( [ Yup.ref( "email" )], "Emails must match" ),
+    password: Yup.string().trim().required( "Password is required" ),
+    passwordConfirm: Yup.string().trim().required( "Password confirmation is required" ).oneOf( [ Yup.ref( "password" )], "Passwords must match" ),
 })
 
 const AuthForm: React.FC = () => {
     const dispatch = useDispatch();
-    const setAuth = useCallback((userWithToken: UserWithToken) => dispatch(setUserToken(userWithToken)), [ dispatch ]);
+    const setAuth = useCallback(( userWithToken: UserWithToken ) => dispatch( setUserToken( userWithToken )), [ dispatch ]);
 
     const navigate = useNavigate();
 
-    const [ isSignIn, setIsSignIn ] = useState<boolean>(true);
+    const [ isSignIn, setIsSignIn ] = useState<boolean>( true );
+    const [ signInError, setSignInError ] = useState<string | null>( null );
 
     return (
         <div className="border w-1/2 rounded-lg shadow">
@@ -60,7 +61,7 @@ const AuthForm: React.FC = () => {
                 validationSchema={ isSignIn ? SignInSchema : SignUpSchema }
                 validateOnChange={ false }
                 validateOnBlur={ false }
-                onSubmit={ async (values, { setSubmitting, setErrors }) => {
+                onSubmit={ async (values, { setSubmitting }) => {
                     let body;
                     if( !isSignIn ) {
                         const { username, email, password } = values as SignUpValues;
@@ -76,12 +77,12 @@ const AuthForm: React.FC = () => {
                     })
                     .then( res => res.json() )
                     .catch( err => {
-                        setErrors(err)
-                        setSubmitting(false);
+                        setSignInError( err.message );
+                        setSubmitting( false );
                     });
-                    setAuth(resp);
-                    setSubmitting(false);
-                    navigate("/");
+                    setAuth( resp );
+                    setSubmitting( false );
+                    navigate( "/" );
                 } }
             >
                 { ({ isSubmitting }) => (
@@ -128,6 +129,7 @@ const AuthForm: React.FC = () => {
                                     { isSignIn ? "Sign Up" : "Sign In" }
                                 </button>
                             </p>
+                            { signInError && <div className="text-red-500 font-semibold text-sm">{ signInError }</div> }
                             { isSubmitting && <div className="animate-pulse font-semibold text-lg my-4">Loading...</div> }
                         </Form>
                     </>
