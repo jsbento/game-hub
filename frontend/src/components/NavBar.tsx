@@ -6,12 +6,11 @@ import { clearState } from "../state/actions/Actions";
 
 const NavBar: React.FC = () => {
     const navigate = useNavigate();
-
-    const user = useSelector((state:State) => state.user);
-
     const dispatch = useDispatch();
 
-    const clear = useCallback(() => dispatch(clearState()), [ dispatch ]);
+    const user = useSelector(( state:State ) => state.user );
+
+    const clear = useCallback(() => dispatch( clearState() ), [ dispatch ]);
 
     const onLogout = () => {
         clear();
@@ -27,10 +26,10 @@ const NavBar: React.FC = () => {
                     </h1>
                 </li>
                 <li className="font-bold text-xl">
-                    <p className="cursor-pointer" onClick={ () => navigate("/") }>Home</p>
+                    <p className="cursor-pointer" onClick={ () => navigate( "/" ) }>Home</p>
                 </li>
                 <li className="font-bold text-xl">
-                    <p className="cursor-pointer" onClick={ () => navigate("/games") }>Games</p>
+                    <p className="cursor-pointer" onClick={ () => navigate( "/games" ) }>Games</p>
                 </li>
                 { user ? (
                     <>
@@ -43,7 +42,7 @@ const NavBar: React.FC = () => {
                     </>
                 ) : (
                     <li className="font-bold text-xl">
-                        <p className="cursor-pointer" onClick={ () => navigate("/auth") }>Login</p>
+                        <p className="cursor-pointer" onClick={ () => navigate( "/auth" ) }>Login</p>
                     </li>
                 )}
             </ul>
