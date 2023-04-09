@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Games from "./pages/Games";
+import Profile from "./pages/users/Profile";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route index element={ <Home /> } />
           <Route path="/auth" element={ <Auth /> } />
           <Route path="/games" element={ <Games /> } />
+          <Route path="/profile" element={ <Profile /> } />
           <Route path="*" element={ <NotFound /> } />
         </Routes>
       </div>
