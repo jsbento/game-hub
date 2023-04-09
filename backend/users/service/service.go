@@ -145,7 +145,7 @@ func (s *UserService) InviteFriend(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *UserService) GetFriendInvites(w http.ResponseWriter, r *http.Request) {
-	userId := r.Header.Get("UserId")
+	userId := r.Header.Get("UserId") // refactor to auth helper to pull this from token
 	if userId == "" {
 		http.Error(w, "Invalid user id", http.StatusBadRequest)
 		return
