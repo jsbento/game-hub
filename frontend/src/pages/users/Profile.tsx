@@ -7,6 +7,8 @@ import InfoTab from "./sections/InfoTab";
 import SocialTab from "./sections/SocialTab";
 import GamesTab from "./sections/GamesTab";
 
+import "../../index.css";
+
 const TABS = [
     "Personal Information",
     "Social",
@@ -22,16 +24,19 @@ const Profile: React.FC = () => {
             <div className="flex flex-col w-full mt-5">
                 <h1 className="font-bold p-3 text-3xl w-full text-center">{ `Hello ${ user.username }!` }</h1>
                 <div className="flex flex-row w-full mx-3 justify-center">
-                    <div className="w-1/6 pl-5 flex-col h-[650px] bg-sky-500 text-white rounded-l-lg">
-                        { TABS.map(( tab, idx ) => (
-                            <p
-                                key={ idx }
-                                className="text-xl font-semibold my-7 cursor-pointer hover:scale-105 transition-transform duration-300"
-                                onClick={ () => setActiveTab( tab ) }
-                            >
-                                { tab }
-                            </p>
-                        ))}
+                    <div className="w-1/6 flex-col h-[650px] bg-sky-500 text-white rounded-l-lg">
+                        { TABS.map(( tab, idx ) => {
+                            const style = activeTab === tab ? "bg-sky-700" : "";
+                            return (
+                                <p
+                                    key={ idx }
+                                    className={ `w-full text-xl font-semibold my-7 cursor-pointer p-2 rounded-l-lg ${ style }` }
+                                    onClick={ () => setActiveTab( tab ) }
+                                >
+                                    { tab }
+                                </p>
+                            )
+                        }) }
                     </div>
                     <div className="bg-gray-50 w-4/6 rounded-r-lg">
                         { activeTab === "Personal Information" && <InfoTab user={ user } /> }
