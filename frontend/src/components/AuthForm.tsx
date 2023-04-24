@@ -25,8 +25,8 @@ const signInInitial: SignInValues = {
 };
 
 const SignInSchema = Yup.object().shape({
-  username: Yup.string().trim().required('Username is required'),
-  password: Yup.string().trim().required('Password is required'),
+  username: Yup.string().trim().required( 'Username is required' ),
+  password: Yup.string().trim().required( 'Password is required' ),
 });
 
 const signUpInitial: SignUpValues = {
@@ -38,34 +38,34 @@ const signUpInitial: SignUpValues = {
 };
 
 const SignUpSchema = Yup.object().shape({
-  username: Yup.string().trim().required('Username is required'),
+  username: Yup.string().trim().required( 'Username is required' ),
   email: Yup.string()
     .trim()
-    .email('Invalid email')
-    .required('Email is required'),
+    .email( 'Invalid email' )
+    .required( 'Email is required' ),
   emailConfirm: Yup.string()
     .trim()
-    .email('Invalid email')
-    .required('Email confirmation is required')
-    .oneOf([Yup.ref('email')], 'Emails must match'),
-  password: Yup.string().trim().required('Password is required'),
+    .email( 'Invalid email' )
+    .required( 'Email confirmation is required' )
+    .oneOf([ Yup.ref( 'email' ) ], 'Emails must match' ),
+  password: Yup.string().trim().required( 'Password is required' ),
   passwordConfirm: Yup.string()
     .trim()
-    .required('Password confirmation is required')
-    .oneOf([Yup.ref('password')], 'Passwords must match'),
+    .required( 'Password confirmation is required' )
+    .oneOf([ Yup.ref( 'password' ) ], 'Passwords must match' ),
 });
 
 const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
   const setAuth = useCallback(
-    (userWithToken: UserWithToken) => dispatch(setUserToken(userWithToken)),
-    [dispatch]
+    ( userWithToken: UserWithToken ) => dispatch( setUserToken( userWithToken )),
+    [ dispatch ]
   );
 
   const navigate = useNavigate();
 
-  const [isSignIn, setIsSignIn] = useState<boolean>(true);
-  const [signInError, setSignInError] = useState<string | null>(null);
+  const [ isSignIn, setIsSignIn ] = useState<boolean>( true );
+  const [ signInError, setSignInError ] = useState<string | null>( null );
 
   return (
     <div className="border w-1/2 rounded-lg shadow">
@@ -74,9 +74,9 @@ const AuthForm: React.FC = () => {
         validationSchema={isSignIn ? SignInSchema : SignUpSchema}
         validateOnChange={false}
         validateOnBlur={false}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async ( values, { setSubmitting }) => {
           let body;
-          if (!isSignIn) {
+          if ( !isSignIn ) {
             const { username, email, password } = values as SignUpValues;
             body = JSON.stringify({ username, email, password });
           } else {
@@ -91,14 +91,14 @@ const AuthForm: React.FC = () => {
               body,
             }
           )
-            .then((res) => res.json())
-            .catch((err) => {
-              setSignInError(err.message);
-              setSubmitting(false);
+            .then(( res ) => res.json())
+            .catch(( err ) => {
+              setSignInError( err.message );
+              setSubmitting( false );
             });
-          setAuth(resp);
-          setSubmitting(false);
-          navigate('/');
+          setAuth( resp );
+          setSubmitting( false );
+          navigate( '/' );
         }}
       >
         {({ isSubmitting }) => (
@@ -119,7 +119,7 @@ const AuthForm: React.FC = () => {
                 />
                 <ErrorMessage
                   name="username"
-                  render={(message) => <FormError message={message} />}
+                  render={( message ) => <FormError message={message} />}
                 />
               </div>
               {!isSignIn && (
@@ -136,7 +136,7 @@ const AuthForm: React.FC = () => {
                     />
                     <ErrorMessage
                       name="email"
-                      render={(message) => <FormError message={message} />}
+                      render={( message ) => <FormError message={message} />}
                     />
                   </div>
                   <div className="flex flex-col">
@@ -151,7 +151,7 @@ const AuthForm: React.FC = () => {
                     />
                     <ErrorMessage
                       name="emailConfirm"
-                      render={(message) => <FormError message={message} />}
+                      render={( message ) => <FormError message={message} />}
                     />
                   </div>
                 </>
@@ -168,7 +168,7 @@ const AuthForm: React.FC = () => {
                 />
                 <ErrorMessage
                   name="password"
-                  render={(message) => <FormError message={message} />}
+                  render={( message ) => <FormError message={message} />}
                 />
               </div>
               {!isSignIn && (
@@ -184,7 +184,7 @@ const AuthForm: React.FC = () => {
                   />
                   <ErrorMessage
                     name="passwordConfirm"
-                    render={(message) => <FormError message={message} />}
+                    render={( message ) => <FormError message={message} />}
                   />
                 </div>
               )}
@@ -202,7 +202,7 @@ const AuthForm: React.FC = () => {
                 <button
                   type="button"
                   className="text-emerald-600 font-bold"
-                  onClick={() => setIsSignIn(!isSignIn)}
+                  onClick={() => setIsSignIn( !isSignIn )}
                 >
                   {isSignIn ? 'Sign Up' : 'Sign In'}
                 </button>

@@ -3,6 +3,7 @@ module github.com/jsbento/game-hub/backend
 go 1.19
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/go-chi/cors v1.2.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
@@ -11,7 +12,7 @@ require (
 	github.com/helloeave/json v1.15.3
 	github.com/joho/godotenv v1.5.1
 	github.com/satori/go.uuid v1.2.0
-	go.mongodb.org/mongo-driver v1.11.2
+	go.mongodb.org/mongo-driver v1.11.4
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d
 )
 

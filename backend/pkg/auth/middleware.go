@@ -2,14 +2,13 @@ package auth
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/golang-jwt/jwt"
 )
 
-// USE COOKIES?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!
 func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Header["Token"] == nil {
@@ -31,16 +30,18 @@ func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			roles, ok := claims["roles"].([]string)
+			roles, ok := claims["roles"].(string)
 			if !ok {
+				log.Println("roles not found in token")
 				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
 			r.Header.Set("UserId", claims["userId"].(string))
-			r.Header.Set("Roles", strings.Join(roles, ","))
+			r.Header.Set("Roles", roles)
 			handler.ServeHTTP(w, r)
 			return
 		}
+		log.Println("missing claims or token invalid")
 
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 	}
