@@ -2,6 +2,7 @@ package auth
 
 import (
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -25,7 +26,7 @@ func GenToken(id, username, email string, roles []string) (string, error) {
 		"userId":     id,
 		"username":   username,
 		"email":      email,
-		"roles":      roles,
+		"roles":      strings.Join(roles, ","),
 		"exp":        time.Now().Add(36 * time.Hour).Unix(),
 	})
 

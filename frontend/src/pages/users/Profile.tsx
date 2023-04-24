@@ -7,8 +7,6 @@ import InfoTab from './sections/InfoTab';
 import SocialTab from './sections/SocialTab';
 import GamesTab from './sections/GamesTab';
 
-import '../../index.css';
-
 const TABS = [ 'Personal Information', 'Social', 'Games' ];
 
 const Profile: React.FC = () => {
@@ -17,7 +15,7 @@ const Profile: React.FC = () => {
 
   return (
     user && (
-      <div className="flex flex-col w-full mt-5">
+      <div className="flex flex-col w-full mt-5 h-[650px]">
         <h1 className="font-bold p-3 text-3xl w-full text-center">{`Hello ${user.username}!`}</h1>
         <div className="flex flex-row w-full mx-3 justify-center">
           <div className="w-1/6 flex-col h-[650px] bg-sky-500 text-white rounded-l-lg">
