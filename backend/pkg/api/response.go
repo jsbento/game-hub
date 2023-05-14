@@ -19,6 +19,14 @@ func WriteJSON(w http.ResponseWriter, code int, data interface{}) {
 	w.Write(b)
 }
 
+func CheckError(w http.ResponseWriter, code int, err error) {
+	if err == nil {
+		return
+	}
+	w.WriteHeader(code)
+	w.Write([]byte(err.Error()))
+}
+
 func Parse(r *http.Request, out interface{}) {
 	if r.Method == http.MethodGet {
 		if err := schema.NewDecoder().Decode(out, r.URL.Query()); err != nil {
