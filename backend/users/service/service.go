@@ -37,6 +37,7 @@ func CreateRouter(s *UserService) chi.Router {
 	r.Post("/friends/invite", auth.CheckAuth(s.InviteFriend))
 	r.Get("/friends/invites", auth.CheckAuth(s.GetFriendInvites))
 	r.Get("/", s.SearchUsers)
+	r.Put("/{id}", auth.CheckAuth(s.UpdateUser))
 	r.Put("/friends/invites/{id}", auth.CheckAuth(s.HandleFriendInvite))
 	r.Put("/friends/{id}", auth.CheckAuth(s.RemoveFriend))
 	return r

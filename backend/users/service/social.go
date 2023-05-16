@@ -110,12 +110,12 @@ func (s *UserService) HandleFriendInvite(w http.ResponseWriter, r *http.Request)
 	u1.Friends = append(u1.Friends, u2.Id)
 	u2.Friends = append(u2.Friends, u1.Id)
 
-	if err := s.UserStore.Update(m.M{"_id": u1.Id}, u1); err != nil {
+	if err := s.UserStore.Update(m.M{"_id": u1.Id}, u1, &t.User{}); err != nil {
 		log.Printf("Error updating user: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if err := s.UserStore.Update(m.M{"_id": u2.Id}, u2); err != nil {
+	if err := s.UserStore.Update(m.M{"_id": u2.Id}, u2, &t.User{}); err != nil {
 		log.Printf("Error updating user: %v", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -133,6 +133,7 @@ func (s *UserService) HandleFriendInvite(w http.ResponseWriter, r *http.Request)
 	}
 }
 
+// TODO: Remove in place of UpdateUser
 func (s *UserService) RemoveFriend(w http.ResponseWriter, r *http.Request) {
 	currentUserId := r.Header.Get("UserId")
 	if currentUserId == "" {
@@ -159,7 +160,8 @@ func (s *UserService) RemoveFriend(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Friends = newFriends
 
-	if err := s.SocialStore.Update(m.M{"_id": currentUserId}, &user); err != nil {
+	updated := t.User{}
+	if err := s.SocialStore.Update(m.M{"_id": currentUserId}, &user, &updated); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

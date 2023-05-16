@@ -33,8 +33,8 @@ func (s *Store) InsertMany(data []interface{}) error {
 	return insertMany(s.client.Database(s.db).Collection(s.col), data)
 }
 
-func (s *Store) Update(filter M, data interface{}) error {
-	return update(s.client.Database(s.db).Collection(s.col), filter, data, nil)
+func (s *Store) Update(filter M, data interface{}, out interface{}) error {
+	return update(s.client.Database(s.db).Collection(s.col), filter, data, out)
 }
 
 func (s *Store) UpdateMany(filter M, data interface{}) error {
