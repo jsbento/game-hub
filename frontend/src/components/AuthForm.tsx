@@ -57,10 +57,7 @@ const SignUpSchema = Yup.object().shape({
 
 const AuthForm: React.FC = () => {
   const dispatch = useDispatch();
-  const setAuth = useCallback(
-    ( userWithToken: UserWithToken ) => dispatch( setUserToken( userWithToken )),
-    [ dispatch ]
-  );
+  const setAuth = useCallback(( userWithToken: UserWithToken ) => dispatch( setUserToken( userWithToken )), [ dispatch ]);
 
   const navigate = useNavigate();
 
