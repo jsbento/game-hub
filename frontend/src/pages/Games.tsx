@@ -5,10 +5,10 @@ import ChessSet from '../assets/ChessSet.png';
 
 const games = [
   {
-    name: 'Chess',
-    description: 'its chess',
+    name: 'Connect Four',
+    description: 'The classic game of Connect Four! Play against a friend or the computer!',
     image: ChessSet,
-    route: '/games/chess',
+    route: '/games/connect-four',
   },
   {
     name: 'Chess',
@@ -71,14 +71,14 @@ const GameCard: React.FC<GameCardProps> = ({
 }) => {
   return (
     <div
-      className="border-2 border-black shadow-xl rounded-md max-w-xs max-h-96 m-3 cursor-pointer hover:scale-105 transition-transform duration-300"
+      className="border-2 border-black shadow-xl rounded-md max-w-[250px] h-[400px] m-3 cursor-pointer bg-slate-100 hover:scale-105 transition-transform duration-300"
       onClick={() => onClick && onClick( route )}
     >
-      <img className="max-h-48" src={image} alt={name} />
+      <img src={image} alt={name} />
       <div className="bg-emerald-600 font-bold text-3xl text-white">
         <p className="p-2">{name}</p>
       </div>
-      <div className="font-semibold text-lg h-32 bg-slate-100">
+      <div className="font-semibold text-lg max-h-40overflow-y-scroll rounded-b-md">
         <p className="p-2">{description}</p>
       </div>
     </div>

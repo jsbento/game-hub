@@ -45,7 +45,7 @@ const InfoTab: React.FC = () => {
 
   return user ? (
     <div className="flex flex-col w-full p-2 ml-3">
-      <div className="mb-4">
+      <div className="flex flex-col mb-4">
         <label className="font-bold text-xl" htmlFor={ changeUsername ? 'username' : undefined }>Username</label>
         { changeUsername ? (
           <input name="username" className="w-1/4 p-2 border-2 border-gray-300 rounded-md" type="text" value={ newUsername } />
@@ -64,6 +64,7 @@ const InfoTab: React.FC = () => {
           name="changePassword"
           className="w-1/4 p-2 border-2 border-gray-300 rounded-md my-1"
           type="password"
+          autoComplete='new-password'
           onChange={ ( e ) => setNewPassword( e.target.value ) }
         />
         { newPassword.length > 0 &&
@@ -73,6 +74,7 @@ const InfoTab: React.FC = () => {
               name="confirmPassword"
               className="w-1/4 p-2 border-2 border-gray-300 rounded-md my-1"
               type="password"
+              autoComplete='new-password'
               onChange={ ( e ) => setConfirmPassword( e.target.value ) }
             />
             { errors.confirmPassword && <p className="text-red-500">{ errors.confirmPassword }</p> }
