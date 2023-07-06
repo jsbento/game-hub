@@ -11,11 +11,15 @@ const SocialTab: React.FC = () => {
   const { user, token } = useSelector(( state: State ) => state );
 
   useEffect(() => {
+    if( !token ) {
+      return;
+    }
+
     const loadSocialReqs = async () => {
       const reqs = await fetch( 'http://localhost:8080/users/friends/invites', {
         headers: {
           'Content-Type': 'application/json',
-          Token: token?.token || '',
+          Token: token.token || '',
         },
         method: 'GET',
       })
@@ -29,9 +33,13 @@ const SocialTab: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    if( !user || user.friends.length === 0 ) {
+      return;
+    }
+
     const loadFriends = async () => {
       const friends: User[] = await fetch( `http://localhost:8080/users?${ new URLSearchParams({
-        ids: user?.friends.join( ',' ) || '',
+        ids: user.friends.join( ',' ) || '',
       })}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +53,7 @@ const SocialTab: React.FC = () => {
     }
 
     loadFriends();
-  })
+  }, [])
 
   const goToProfile = ( userId: string ) => {
     console.log( 'Going to profile', userId )

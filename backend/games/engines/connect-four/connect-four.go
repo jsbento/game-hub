@@ -9,6 +9,7 @@ func (game *ConnectFour) Search(depth int) *BoardCell {
 		return nil
 	}
 
+	// winning moves and moves when the opponent has three in a row first
 	possibleMoves := game.GetPossibleMoves()
 	if len(possibleMoves) == 0 {
 		return nil

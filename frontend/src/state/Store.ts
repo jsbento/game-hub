@@ -8,13 +8,14 @@ import { rootReducer } from './reducers/Reducers';
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: [ 'user', 'token' ],
 };
 
-// const persistedReducer = persistReducer(persistConfig, {});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  // reducer: persistedReducer,
-  reducer: rootReducer,
+  reducer: persistedReducer,
+  //reducer: rootReducer,
   devTools: true,
   middleware: [ thunk ],
 });

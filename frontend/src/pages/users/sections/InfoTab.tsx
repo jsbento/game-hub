@@ -10,7 +10,7 @@ const InfoTab: React.FC = () => {
   const updateUser = useCallback(( user: User ) => dispatch( setUser( user )), [ dispatch ]);
 
   const [ changeUsername, setChangeUsername ] = useState<boolean>( false );
-  const [ newUsername, setNewUsername ] = useState<string>( user?.username || '' );
+  const [ newUsername, setNewUsername ] = useState<string>(( user && user.username ) || '' );
   const [ newPassword, setNewPassword ] = useState<string>( '' );
   const [ confirmPassword, setConfirmPassword ] = useState<string>( '' );
   const [ errors, setErrors ] = useState<{ [key: string]: string }>({});
@@ -22,20 +22,25 @@ const InfoTab: React.FC = () => {
   }
 
   const onSaveChanges = async () => {
+    if( !user ) {
+      return;
+    }
+
     if ( newPassword.length > 0 && newPassword !== confirmPassword ) {
       setErrors({ confirmPassword: 'Passwords do not match' });
       return;
     }
+
     const req: { [key: string]: string } = {
-      id: user!.id,
+      id: user.id,
     }
-    if ( changeUsername && newUsername !== user?.username ) req.username = newUsername;
+    if ( changeUsername && newUsername !== user.username ) req.username = newUsername;
     if ( newPassword.length > 0 && newPassword === confirmPassword ) req.password = newPassword;
 
     const updated: User = await fetch( `http://localhost:8080/users/${ user!.id }`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify( req )
+      body: JSON.stringify( req ),
     })
     .then( res => res.json())
     .catch( err => console.log( err ));

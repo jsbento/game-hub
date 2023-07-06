@@ -8,6 +8,13 @@ const (
 	GameStatusDraw       GameStatus = "draw"
 )
 
+type Turn int
+
+const (
+	TurnRed    Turn = 0
+	TurnYellow Turn = 1
+)
+
 type ConnectFour struct {
 	Turn    int            `json:"turn"`
 	Board   [][]*BoardCell `json:"board"`

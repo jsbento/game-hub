@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ConnectFourCell } from '../../types/games/ConnectFour';
 
-const ConnectFour: React.FC = () => {
+const RED = 'rgb(239, 68, 68)';
+const YELLOW = 'rgb(250, 204, 21)';
+const NEUTRAL = 'rgb(229, 229, 229)';
+const HIGHLIGHT = 'rgb(134, 239, 72)';
+
+interface ConnectFourProps {
+  mode: 'pvp' | 'pve'
+}
+
+const ConnectFour: React.FC<ConnectFourProps> = ({ mode }) => {
   const [ board, setBoard ] = useState<ConnectFourCell[][]>([[]]);
   const [ highlightedCells, setHighlightedCells ] = useState<ConnectFourCell[]>([]);
+  const [ turn, setTurn ] = useState<'red' | 'yellow'>( 'red' );
+  const [ history, setHistory ] = useState<ConnectFourCell[]>([]);
 
   useEffect(() => {
     initBoard();
@@ -23,18 +34,22 @@ const ConnectFour: React.FC = () => {
   }
 
   const onMouseLeave = () => {
-    setHighlightedCells( [] );
+    setHighlightedCells([]);
   }
 
   const onClickCell = ( cell: ConnectFourCell ) => {
     for( let i = board.length - 1; i >= 0; i-- ) {
       if( board[i][cell.col].color === null ) {
-        board[i][cell.col] = {
+        const newCell: ConnectFourCell = {
           ...board[i][cell.col],
-          color: 'bg-red-500',
+          color: turn === 'red' ? RED : YELLOW,
         };
-        setBoard( [ ...board ] );
-        break;
+        board[i][cell.col] = newCell;
+
+        setBoard([ ...board ]);
+        setHistory([ ...history, newCell ]);
+        setTurn( turn === 'red' ? 'yellow' : 'red' );
+        return;
       }
     }
   }
@@ -57,11 +72,11 @@ const ConnectFour: React.FC = () => {
   }
 
   const renderBoard = () => {
-    return board.map(( row: ConnectFourCell[], idx: number ) => (
-      <div key={idx} className="flex flex-row">
-        { row.map(( cell: ConnectFourCell, idx: number ) => (
+    return board.map(( row: ConnectFourCell[], rIdx: number ) => (
+      <div key={rIdx} className="flex flex-row">
+        { row.map(( cell: ConnectFourCell, cIdx: number ) => (
           <BoardCell
-            key={idx}
+            key={cIdx}
             cell={cell}
             isHighlighted={ highlightedCells.some( c => c.row === cell.row && c.col === cell.col ) }
             onMouseEnter={ onMouseEnter }
@@ -92,18 +107,19 @@ const BoardCell: React.FC<BoardCellProps> = ({ cell, isHighlighted, onMouseEnter
   const [ color, setColor ] = useState<string>( 'bg-neutral-200' );
 
   useEffect(() => {
-    if( cell.color ) {
+    if( cell.color !== null ) {
       setColor( cell.color );
     } else if( isHighlighted ) {
-      setColor( 'bg-green-300' );
+      setColor( HIGHLIGHT );
     } else {
-      setColor( 'bg-neutral-200' );
+      setColor( NEUTRAL );
     }
   }, [ cell.color, isHighlighted ])
 
   return (
     <div
-      className={ `w-10 h-10 border-2 border-blue-600 rounded-full m-1 ${ color }` }
+      style={{ backgroundColor: color }}
+      className="w-10 h-10 border-2 border-blue-600 rounded-full m-1"
       onMouseEnter={ () => onMouseEnter( cell ) }
       onMouseLeave={ () => onMouseLeave() }
       onClick={ () => onClick( cell ) }
