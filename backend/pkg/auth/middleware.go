@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -45,4 +46,51 @@ func CheckAuth(handler http.HandlerFunc) http.HandlerFunc {
 
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 	}
+}
+
+func GetUserData(r *http.Request) *struct {
+	Id    string
+	Email string
+	Roles []string
+} {
+	if r.Header["Token"] == nil {
+		return nil
+	}
+
+	key := []byte(os.Getenv("JWT_SECRET_KEY"))
+	token, err := jwt.Parse(r.Header["Token"][0], func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return key, nil
+	})
+	if err != nil {
+		return nil
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		roles, ok := claims["roles"].(string)
+		if !ok {
+			return nil
+		}
+		userId, ok := claims["userId"].(string)
+		if !ok {
+			return nil
+		}
+		email, ok := claims["email"].(string)
+		if !ok {
+			return nil
+		}
+
+		return &struct {
+			Id    string
+			Email string
+			Roles []string
+		}{
+			Id:    userId,
+			Email: email,
+			Roles: strings.Split(roles, ","),
+		}
+	}
+	return nil
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jsbento/game-hub/backend/pkg/api"
+	"github.com/jsbento/game-hub/backend/pkg/auth"
 	m "github.com/jsbento/game-hub/backend/pkg/mongo"
 	t "github.com/jsbento/game-hub/backend/users/types"
 	uuid "github.com/satori/go.uuid"
@@ -135,8 +136,8 @@ func (s *UserService) HandleFriendInvite(w http.ResponseWriter, r *http.Request)
 
 // TODO: Remove in place of UpdateUser
 func (s *UserService) RemoveFriend(w http.ResponseWriter, r *http.Request) {
-	currentUserId := r.Header.Get("UserId")
-	if currentUserId == "" {
+	currentUser := auth.GetUserData(r)
+	if currentUser == nil || currentUser.Id == "" {
 		http.Error(w, "Invalid user id", http.StatusBadRequest)
 		return
 	}
@@ -147,7 +148,7 @@ func (s *UserService) RemoveFriend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user := t.User{}
-	if err := s.UserStore.FindOne(m.M{"_id": currentUserId}, &user); err != nil {
+	if err := s.UserStore.FindOne(m.M{"_id": currentUser.Id}, &user); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -161,7 +162,7 @@ func (s *UserService) RemoveFriend(w http.ResponseWriter, r *http.Request) {
 	user.Friends = newFriends
 
 	updated := t.User{}
-	if err := s.SocialStore.Update(m.M{"_id": currentUserId}, &user, &updated); err != nil {
+	if err := s.SocialStore.Update(m.M{"_id": currentUser.Id}, &user, &updated); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}

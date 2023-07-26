@@ -83,7 +83,7 @@ const ConnectFour: React.FC<ConnectFourProps> = ({ mode }) => {
             onMouseLeave={ onMouseLeave }
             onClick={ onClickCell }
           />
-        ))}
+        )) }
       </div>
     ))
   }

@@ -1,6 +1,6 @@
 package connectfour
 
-func (game *ConnectFour) Evaluate() float64 {
+func (game *ConnectFour) ScoreMove(move *BoardCell) float64 {
 	return 0.0
 }
 
@@ -16,7 +16,7 @@ func (game *ConnectFour) Search(depth int) *BoardCell {
 	}
 	for _, move := range possibleMoves {
 		game.PlayMove(move)
-		move.Score = game.Evaluate()
+		move.Score = game.ScoreMove(move)
 		game.Search(depth - 1)
 		game.TakeMove()
 	}
